@@ -9,16 +9,11 @@ class User extends Model
     #region Users
     /**
      * login
-     *Allows to check if a user exists at the time of his connection 
-     *return of hereure if the info of the form is not correct
+     * Allows to check if a user exists at the time of his connection 
+     * return of hereure if the info of the form is not correct
      * @param  mixed $login
      * @param  mixed $password
-     * @return stdClass
-     * The different errors return
-     * 100->One or more fields are empty
-     * 110->The login does not have the required number of characters
-     * 120->Password is too short
-     * 130->The user does not exist
+     * @return array|stdClass
      */
     public function login($login, $password): stdClass
     {
@@ -79,7 +74,7 @@ class User extends Model
 
                 $this->primaryKey = "t_users_id";
 
-                $this->delete($id,'t_users_has_t_users_info');
+                $this->delete($id, 't_users_has_t_users_info');
 
                 $this->primaryKey = "id";
 
@@ -99,7 +94,7 @@ class User extends Model
 
     /**
      * register
-     *
+     *  regist user and info user in the DB
      * @param  string $name
      * @param  string $firstName
      * @param  string $login
@@ -114,7 +109,7 @@ class User extends Model
      * @param  int $isActive
      * @param  array $file
      * @param  int $idUser
-     * @return stdClass
+     * @return array|stdClass
      */
     public function register(string $name, string $firstName, string $login, string $email, string $pass, string $adress1, string $adress2, string $zipcode, string $tel, string $city, string $role = null, int $isActive = null, array $file = null, $idUser = null): stdClass
     {
@@ -248,6 +243,12 @@ class User extends Model
         }
         return $key;
     }
+    /**
+     * loadInfoUser
+     *  return info the user 
+     * @param  int $idUser
+     * @return array|stdClass
+     */
     public function loadInfoUser($idUser)
     {
 
@@ -265,11 +266,9 @@ class User extends Model
     }
     /**
      * get_profile
-     *Allows you to retrieve the user's profile
+     * Allows you to retrieve the user's profile
      * @param  int $id Takes id of user search
-     * @return stdClass info(Request results) , error(Error is an array if it is null there is no error)
-     * Errors that can be returned her
-     * 100=>The user does not exist
+     * @return array|stdClass 
      */
     function get_profile(int $id): stdClass
     {
@@ -305,7 +304,7 @@ class User extends Model
 
     /**
      * set_profile
-     *Allows you to modify a user's profile
+     * Allows you to modify a user's profile
      * @param  int $id profile id to modify
      * @param  string $login Optional parameters
      * @param  string $email Optional parameters
@@ -320,17 +319,7 @@ class User extends Model
      * @param  string $mobile Optional parameters
      * @param  string $role Optional parameters
      * @param  string $city Optional parameters
-     * @return stdClass Returns the user profile edit
-     * @error 
-     * May return the following errors
-     * @error 
-     * 100=>The two passwords are not the same 
-     * @error 
-     * 110=>The login contains unauthorized characters
-     * @error 
-     * 120=>The email address is not valid
-     * @error 
-     * 130=>The file extension used for the avatar is not allowed
+     * @return array|stdClass
      */
     function set_profile(int $id, string $login = null, string $email = null, string $mp1 = null, string $mp2 = null, array $avatar_file = null, string $address_1 = null, string $address_2 = null, string $zip_code = null, string $country = null, string $phone = null, string $mobile = null, string $role = null, string $city = null)
     {
@@ -643,6 +632,11 @@ class User extends Model
 
     #region roles
 
+    /**
+     * getListeRoles
+     * return  the list roles 
+     * @return void
+     */
     public function getListeRoles()
     {
 
@@ -651,6 +645,15 @@ class User extends Model
     }
 
 
+    /**
+     * saveRole
+     * save new role and update role existant
+     * @param  string $name
+     * @param  string $description
+     * @param  array $file
+     * @param  int $id
+     * @return array|stdClass
+     */
     public function saveRole(string $name, string $description, array $file, $id = null)
     {
         $d = new stdClass();
@@ -721,6 +724,12 @@ class User extends Model
         return $d;
     }
 
+    /**
+     * getRoleById
+     * return role by id 
+     * @param  int $id
+     * @return array|stdClass|int
+     */
     public function getRoleById(int $id)
     {
         $d = new stdClass();
@@ -739,6 +748,12 @@ class User extends Model
         return $d->info;
     }
 
+    /**
+     * deleteRole
+     *  delete role by id
+     * @param  int $id
+     * @return void
+     */
     public function deleteRole($id)
     {
         $role = $this->findFirst([

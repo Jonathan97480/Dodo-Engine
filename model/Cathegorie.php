@@ -3,12 +3,14 @@ class Cathegorie extends Model
 {
      public $table = 't_cathegories';
 
-
-
-
      #region cathegorie
 
-
+     /**
+      * getListeCathegorie
+      * return liste cathegorie or unique cathegorie by id
+      * @param  int $id
+      * @return void
+      */
      public function getListeCathegorie($id = null)
      {
 
@@ -31,10 +33,20 @@ class Cathegorie extends Model
                }
                $d[$key] = $value;
           }
-       
+
           return $d;
      }
 
+     /**
+      * saveCathegorie
+      * save new cathegorie or update cathegorie in the db
+      * @param  string $name
+      * @param  string $description
+      * @param  string $file
+      * @param  int $id
+      * @param  int $categorie_parent
+      * @return array|stdClass
+      */
      public function saveCathegorie(string $name, string $description, array $file, $id = null, $categorie_parent = "NULL")
      {
           $d = new stdClass();
@@ -109,6 +121,12 @@ class Cathegorie extends Model
           return $d;
      }
 
+     /**
+      * getCategorieById
+      * return cathegorie by id
+      * @param  int $id
+      * @return array|stdClass
+      */
      public function getCategorieById(int $id)
      {
           $d = new stdClass();
@@ -127,9 +145,15 @@ class Cathegorie extends Model
 
           $d->info = $this->getChildrenCategorie($d->info);
 
-        
+
           return $d->info;
      }
+     /**
+      * deleteCathegorie
+      * delete cathegorie by id
+      * @param  int $id
+      * @return void|array|stdClass
+      */
      public function deleteCathegorie($id)
      {
           /* vérification si la Cathegorie existe dans la BD */
@@ -158,6 +182,12 @@ class Cathegorie extends Model
 
           $this->deleteImg($cathegorie->img);
      }
+     /**
+      * getChildrenCategorie
+      * get children cathegorie by parent
+      * @param  mixed $cathegorie
+      * @return array|stdClass
+      */
      private function getChildrenCategorie($cathegorie)
      {
 
@@ -178,13 +208,20 @@ class Cathegorie extends Model
           return $cathegorie;
      }
 
-     public function clearParentCategorie($id){
+     /**
+      * clearParentCategorie
+      * Removes a category as a child of another category
+      * @param  int $id
+      * @return bool
+      */
+     public function clearParentCategorie($id)
+     {
 
-          $d=$this->findFirst([
-               'conditions'=>['id'=>$id]
+          $d = $this->findFirst([
+               'conditions' => ['id' => $id]
           ]);
 
-          $d->categorie_parent =null;
+          $d->categorie_parent = null;
 
           $this->save($d);
 
@@ -284,6 +321,11 @@ class Cathegorie extends Model
      #region Tags
 
 
+     /**
+      * getListeTags
+      * return listes tags int the BD
+      * @return array|stdClass
+      */
      public function getListeTags()
      {
 
@@ -292,6 +334,16 @@ class Cathegorie extends Model
           return $d;
      }
 
+     /**
+      * saveTag
+      * save or update tag in the DB
+      * @param  string $name
+      * @param  string $description
+      * @param  array $file
+      * @param  int $id
+      * @param  mixed $tag_parents
+      * @return array|stdClass
+      */
      public function saveTag(string $name, string $description, array $file, $id = null, $tag_parents)
      {
           $d = new stdClass();
@@ -360,7 +412,13 @@ class Cathegorie extends Model
 
           return $d;
      }
-
+     
+     /**
+      * getTagById
+      * return the tag by id
+      * @param  int $id
+      * @return array|stdClass
+      */
      public function getTagById(int $id)
      {
           $d = new stdClass();
@@ -377,7 +435,13 @@ class Cathegorie extends Model
           }
 
           return $d->info;
-     }
+     }     
+     /**
+      * deleteTag
+      * delete the tag by id
+      * @param  int $id
+      * @return void
+      */
      public function deleteTag($id)
      {
           /* vérification si le tag existe dans la BD */

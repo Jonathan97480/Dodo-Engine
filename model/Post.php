@@ -3,20 +3,17 @@ class Post extends Model
 {
     public $table = 'post';
 
-    /* regle de validation des post  */
-    var $validate = array(
-        'name' => array(
-            'rule' => 'notEmpty',
-            'message' => 'Vous devez préciser un titre'
-        ),
-        'slug' => array(
-            'rule' => '([a-z0-9\-]+)',
-            'message' => "Le slug n'est pas valide"
-        )
-    );
 
 
 
+
+    /**
+     * GetlisteArticle
+     *  Return the first 10 articles per page 
+     * @param  string $type
+     * @param  int $curentPage
+     * @return array|stdClass
+     */
     public function  GetlisteArticle($type = null, $curentPage)
     {
         $perPage = 10;
@@ -30,11 +27,11 @@ class Post extends Model
 
                 'limit' => ($perPage * ($curentPage - 1)) . ',' . $perPage
             ));
-        }else{
+        } else {
 
             $d['posts'] = $this->find(array(
                 'fields' => 'id,name,online,type,created,date_edit',
-                'conditions'=>['type'=>$type],
+                'conditions' => ['type' => $type],
 
                 'limit' => ($perPage * ($curentPage - 1)) . ',' . $perPage
             ));
@@ -54,10 +51,19 @@ class Post extends Model
         return $d;
     }
 
+    /**
+     * GetBlogByCathegorie
+     * return firts 10 blog  by the Cathegorie
+     * @param  string $type
+     * @param  int $idCathegorie
+     * @param  int $curentPage
+     * @param  int $paramsPage
+     * @return array|stdClass
+     */
     public function GetBlogByCathegorie($type, $idCathegorie, $curentPage, $paramsPage = null)
     {
         $d = array();
-        $perPage = 5;
+        $perPage = 10;
         $page = $curentPage;
         $condition = array('online' => 1, 'type' => $type);
         /* (FR) Renvoie le nombre d'entrées qui porte le type post dans la base données
@@ -96,17 +102,31 @@ class Post extends Model
         return $d;
     }
 
+    /**
+     * getLastArticle
+     *  return 10 last post 
+     * @param  string $type
+     * @return array|stdClass
+     */
     public function getLastArticle($type)
     {
 
         $sql = "SELECT id,name,slug FROM " . $this->table . " 
-        WHERE type='" . $type . "' AND online=1 ORDER BY id DESC LIMIT 1,5";
+        WHERE type='" . $type . "' AND online=1 ORDER BY id DESC LIMIT 1,10";
 
         $d = $this->query($sql);
 
         return $d;
     }
 
+    /**
+     * GetArticleByType
+     *return firts 10 Article by the Cathegorie
+     * @param  string $type
+     * @param  int $curentPage
+     * @param  int $paramsPage
+     * @return array|stdClass
+     */
     public function GetArticleByType($type, $curentPage, $paramsPage = null)
     {
 
@@ -139,7 +159,7 @@ class Post extends Model
         LEFT JOIN t_cathegories_has_post ON t_cathegories_has_post.post_id =" . $this->table . ".id 
         LEFT JOIN t_cathegories ON t_cathegories.id= t_cathegories_has_post.cathegories_id 
         WHERE  type='" . $type . "' AND online =1 GROUP BY post.id LIMIT " . ($perPage * ($page - 1)) . ',' . $perPage;
-       
+
         $d['posts'] = $this->query($sql);
         /*  */
         /* (FR)Calcul pour définir le nombre de postes par page
@@ -150,6 +170,12 @@ class Post extends Model
         return $d;
     }
 
+    /**
+     * getPost
+     *  return post by id
+     * @param  int $id
+     * @return array|stdClass
+     */
     public function getPost($id)
     {
         $d = [];
@@ -169,6 +195,12 @@ class Post extends Model
         return $d;
     }
 
+    /**
+     * getProjet
+     * return projet by id
+     * @param  int $id
+     * @return array|stdClass
+     */
     public function getProjet($id)
     {
 
@@ -215,7 +247,7 @@ class Post extends Model
 
     /**
      * getPostByName
-     *
+     * reutrn post by name 
      * @param  string $Search
      * @return array|stdClass
      */
@@ -431,21 +463,27 @@ class Post extends Model
             ], 't_cathegories_has_post');
         }
     }
-
-    public function deletePost($id){
+    
+    /**
+     * deletePost
+     *  delete post by id
+     * @param  int $id
+     * @return void
+     */
+    public function deletePost($id)
+    {
 
         $img = $this->findFirst([
-            'conditions'=>['id'=>$id],
-            'fields'=>'img_description'
+            'conditions' => ['id' => $id],
+            'fields' => 'img_description'
         ]);
         $this->delete($id);
 
-   
-        $this->primaryKey ='post_id';
-        $this->delete($id,'t_cathegories_has_post');
-        
-        $this->deleteImg($img->img_description);
 
+        $this->primaryKey = 'post_id';
+        $this->delete($id, 't_cathegories_has_post');
+
+        $this->deleteImg($img->img_description);
     }
     #region Image traitment
     private function saveImg(array $file, $w = 100, $h = 100, $resize = true): string
@@ -489,7 +527,7 @@ class Post extends Model
                     //Image resizing
                     $new_img = new img($filetowrite);
 
-                  
+
                     $new_img->resize($w, $h);
 
                     //Define the file name

@@ -4,6 +4,11 @@ class Message extends Model
     public $table = 't_messages';
 
 
+    /**
+     * getAllmessage
+     * return all message in the table t_messages
+     * @return void
+     */
     public function getAllmessage()
     {
 
@@ -14,6 +19,12 @@ class Message extends Model
         return $d;
     }
 
+    /**
+     * deleteMessage
+     *  delte message in the DB
+     * @param  int $id
+     * @return void|array|stdClass
+     */
     public function deleteMessage($id)
     {
 
@@ -27,6 +38,15 @@ class Message extends Model
         $this->delete($id);
     }
 
+    /**
+     * postMessage
+     *  add message in the DB
+     * @param  string $email
+     * @param  string $obj
+     * @param  string $content
+     * @param  string $fullName
+     * @return bool|stdClass|array
+     */
     public function postMessage($email, $obj, $content, $fullName)
     {
         $m = new stdClass();
@@ -45,6 +65,12 @@ class Message extends Model
         return true;
     }
 
+    /**
+     * readMessage
+     *  return message 
+     * @param  int $id
+     * @return array|stdClass
+     */
     public function readMessage($id)
     {
         $m = new stdClass();
@@ -69,25 +95,37 @@ class Message extends Model
         return $m->message;
     }
 
-    public function getNewMessages(){
+    /**
+     * getNewMessages
+     *  return the first five messages don't read and count message no read
+     * @return array|stdClass
+     */
+    public function getNewMessages()
+    {
 
         $d = new stdClass();
 
         $d->info = $this->find([
-            'conditions'=>['is_read'=>'0'],
-            'LIMIT'=>'0,5',
-            'ORDER BY'=>'id DESC'
+            'conditions' => ['is_read' => '0'],
+            'LIMIT' => '0,5',
+            'ORDER BY' => 'id DESC'
         ]);
 
-         $d->count = $this->countMessages();   
-        
-         return $d;
+        $d->count = $this->countMessages();
+
+        return $d;
     }
 
-    private function countMessages(){
+    /**
+     * countMessages
+     *  return count message no read
+     * @return void
+     */
+    private function countMessages()
+    {
 
-       $d = $this->findCount([
-            'is_read'=>'0'
+        $d = $this->findCount([
+            'is_read' => '0'
         ]);
 
         return $d;

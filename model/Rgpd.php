@@ -3,6 +3,12 @@ class Rgpd extends Model
 {
     public $table = 't_rgpd';
 
+    /**
+     * saveRgpd
+     *  save rgpd popup text
+     * @param  string $description
+     * @return void
+     */
     public function saveRgpd($description)
     {
 
@@ -12,6 +18,12 @@ class Rgpd extends Model
             'description' => $description
         ]);
     }
+    /**
+     * saveLegalNotive
+     *  save legal notive texte
+     * @param  string $description
+     * @return void
+     */
     public function saveLegalNotive($description)
     {
 
@@ -22,6 +34,11 @@ class Rgpd extends Model
         ]);
     }
 
+    /**
+     * getTextRgpd
+     * return text rgpd
+     * @return array|stdClass
+     */
     public function getTextRgpd()
     {
 
@@ -31,6 +48,11 @@ class Rgpd extends Model
 
         return $info;
     }
+    /**
+     * getTextLegalNotive
+     *  return text legal notive
+     * @return void
+     */
     public function getTextLegalNotive()
     {
         $info = $this->findFirst([
@@ -39,6 +61,11 @@ class Rgpd extends Model
 
         return $info;
     }
+    /**
+     * loadInfoRgpd
+     *  return rgpd and legal notive text
+     * @return array|stdClass
+     */
     public function loadInfoRgpd()
     {
         $info = [];

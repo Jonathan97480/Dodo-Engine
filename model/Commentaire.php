@@ -4,6 +4,13 @@ class Commentaire extends Model
     public $table = 't_commentaires';
     public $cont = 0;
 
+    /**
+     * getComentaire
+     * return commentaire link the post
+     * @param  int $idPost
+     * @param  int $idCommentaire
+     * @return void
+     */
     public function getComentaire($idPost, $idCommentaire = null)
     {
 
@@ -33,7 +40,7 @@ class Commentaire extends Model
     }
     /**
      * getResponses
-     *
+     * return responses link in the commentaire parent
      * @param  array|stdClass $commentaire
      * @return array|stdClass 
      */
@@ -58,7 +65,7 @@ class Commentaire extends Model
 
     /**
      * postCommentaire
-     *
+     * save commentaire in the BD
      * @param  string $login
      * @param  int $idPost
      * @param  string $message

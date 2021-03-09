@@ -7,23 +7,22 @@ class Media extends Model
 
     /**
      * get_all_img
-     *Allows you to have the list of all the images in the gallery
+     *  return all img & all img fields
      * @return stdClass list
      */
     public  function get_all_img()
     {
 
         $upload_img = new stdClass();
-        $upload_img->list = array();
 
-        $upload_img->list = $this->find(array());
+        $upload_img->list = $this->find([]);
 
         return $upload_img;
     }
 
     /**
      * delete_img
-     *  delete img to database 
+     *  delete img to database  & delete link to table tags_has_medias
      * @param  int $id
      * @return bool 
      */
@@ -38,6 +37,7 @@ class Media extends Model
         ));
 
         if (!empty($media)) {
+
             /*Remove image from folder*/
             @unlink(WEBROOTT . DS . 'img' . DS . $media->urlsmall);
             @unlink(WEBROOTT . DS . 'img' . DS . $media->urlbig);
@@ -46,9 +46,12 @@ class Media extends Model
             $this->delete($id);
 
             $this->primaryKey = "fk_media_id";
+
             $this->delete($id, 'tags_has_medias');
+
             return true;
         } else {
+
             return false;
         }
 
@@ -147,13 +150,19 @@ class Media extends Model
         return $upload_img;
     }
 
+    /**
+     * uploadTyni
+     * Upload and save image to database & return img img urlbig for tynimce editor 
+     * @param  mixed $file
+     * @return void
+     */
     public function uploadTyni($file)
     {
         $file = $file['file'];
         $upload_img = new stdClass;
         $upload_img->file = array();
         $upload_img->error = array();
-       
+
         /* I verify that the file was transmitted by HTTP POST*/
         if (is_uploaded_file($file['tmp_name'])) {
 
@@ -198,7 +207,7 @@ class Media extends Model
                 $filetowrite = $dir .  DS . 'small' . DS . $new_fil_name;
 
                 $new_img->store($filetowrite);
-               
+
                 /* Serialization of image info to save the database */
                 $data = array(
                     'name' => $file['name'],
@@ -227,6 +236,11 @@ class Media extends Model
             }
         }
     }
+    /**
+     * getGaleriePicture
+     *  return all img and fields ( urlsmall , urlbig , id , name )
+     * @return array!stdClass
+     */
     public function getGaleriePicture()
     {
         $d = $this->find([
@@ -329,7 +343,12 @@ class Media extends Model
             }
         }
     }
-
+    
+    /**
+     * getGalerie
+     * Returns the images selected by the user to be displayed in the gallery
+     * @return void
+     */
     public function getGalerie()
     {
 
