@@ -141,6 +141,9 @@
         width: 400px;
         height: 80vh;
     }
+    .select{
+       box-shadow: 5px 5px 5px blue;
+    }
 </style>
 
 
@@ -148,6 +151,7 @@
     let $url = <?= Router::url() ?>;
     let input = document.getElementById('file-input');
     let formInfoBlock = document.getElementById('panel-id');
+    let selectDiv
     class InfoGalerie {
 
         id = 0;
@@ -274,9 +278,10 @@
                         /* generate elements and add this elements in the Dom */
                         let myDiv = document.createElement('div');
                         myDiv.setAttribute('class', 'card-thundail');
+                        myDiv.setAttribute('id', 'img_'+data['results'][index]['id']);
 
                         let myIcon = document.createElement('i');
-                        myIcon.setAttribute('onclick', 'getInfo(' + data['results'][index]['id'] + ')');
+                        myIcon.setAttribute('onclick', 'getInfo(' + data['results'][index]['id'] + ',)');
                         myIcon.setAttribute('class', 'fas fa-info-circle');
 
                         myDiv.appendChild(myIcon);
@@ -334,8 +339,20 @@
     function getInfo(id, $message = null, isError = false) {
 
         let info = new InfoGalerie(id, $url);
+
         info.getInfo((data) => {
+
             document.getElementById('panel-id').innerHTML = data
+
+            if(selectDiv!=null){
+                
+                selectDiv.setAttribute('class',"card-thundail");
+                selectDiv =null;
+            }
+             selectDiv = document.getElementById('img_'+id);
+             selectDiv.setAttribute('class',"card-thundail select");
+
+
             if ($message != null) {
 
 

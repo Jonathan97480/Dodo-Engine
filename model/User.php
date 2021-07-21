@@ -70,6 +70,12 @@ class User extends Model
                 'conditions' => ['id' => $id]
             ]);
 
+            if ($user->info->fk_role_id == 1) {
+
+                $user->error[10] = " Les admin ne peuvent pas être supprimé ";
+                return $user;
+            }
+
             if (!empty($user->info)) {
 
                 $this->primaryKey = "t_users_id";
@@ -147,6 +153,10 @@ class User extends Model
             $user->error[110] = "cette email est déjà utilisé";
         }
 
+        if ($idUser == null && empty($pass)) {
+            $user->error[110] = "Le mot de passe est obligatoire pour ajouter un utilisateur";
+        }
+
         /* (FR)si tout est correct on sauvegarde le nouvelle utilisateur  */
         /* (FR)Encodage du mot de passe pour sauvegarde */
         if (empty($user->error)) {
@@ -154,7 +164,12 @@ class User extends Model
             $user->info->login = htmlspecialchars($login);
             $user->info->name = htmlspecialchars($name);
             $user->info->first_name = htmlspecialchars($firstName);
-            $user->info->password = sha1(htmlspecialchars($pass));
+
+            if (!empty($pass)) {
+
+                $user->info->password = sha1(htmlspecialchars($pass));
+            }
+
             $user->info->email = htmlspecialchars($email);
             if (!empty($role)) {
                 $user->info->fk_role_id = htmlspecialchars($role);
