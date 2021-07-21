@@ -92,7 +92,7 @@ $user = $_SESSION['User'];
                 <a class="nav-link " href="<?= Router::url('systeme/admin_message') ?>" aria-expanded="true">
                     <i class="fas fa-envelope"></i>
 
-                    <span >Message<span class="badge badge-danger m-span notif-m">7</span></span>
+                    <span>Message<span class="badge badge-danger m-span notif-m">7</span></span>
 
                 </a>
             </li>
@@ -120,7 +120,7 @@ $user = $_SESSION['User'];
                     <i class="fas fa-tags"></i>
                     <span>Liste Des Catégories</span>
                 </a>
-          
+
                 <a class="nav-link " href="<?php echo Router::url('admin/medias/galerie'); ?>" aria-expanded="true" aria-controls="collapsePages">
                     <i class="far fa-images"></i>
                     <span>Galerie d'images</span>
@@ -286,8 +286,8 @@ $user = $_SESSION['User'];
 </html>
 
 <style>
-    .m-span{
-       margin-left: 5px;
+    .m-span {
+        margin-left: 5px;
     }
 </style>
 <script>
@@ -310,14 +310,14 @@ $user = $_SESSION['User'];
                 const element = results['info'][index];
                 var myLink = document.createElement('a');
                 myLink.setAttribute('class', 'dropdown-item d-flex align-items-center');
-                myLink.setAttribute('href', baseUrl+'systeme/admin_message/id:'+element['id'])
+                myLink.setAttribute('href', baseUrl + 'systeme/admin_message/id:' + element['id'])
 
                 let message = '';
                 message += '              <div class="dropdown-list-image mr-3">';
                 message += '                 <img class="rounded-circle" src="' + baseUrl + 'webroot/img/avatar/img_603a29e434bc0.png' + '" alt="">';
                 message += '              </div>';
                 message += '              <div class="font-weight-bold">';
-                message += '                <div class="text-truncate">' + element['objet_message']+'</div>';
+                message += '                <div class="text-truncate">' + element['objet_message'] + '</div>';
                 message += '                    <div class="small text-gray-500">' + element['date'] + '</div>';
                 message += '             </div>';
 
@@ -335,7 +335,7 @@ $user = $_SESSION['User'];
 
                     const element = notifCount[index];
 
-                    element.innerHTML = ''+results['count'];
+                    element.innerHTML = '' + results['count'];
 
                 }
             } else {
@@ -343,12 +343,10 @@ $user = $_SESSION['User'];
 
                     const element = notifCount[index];
 
-                    element.setAttribute('class','');
+                    element.setAttribute('class', '');
 
                 }
             }
-
-
 
         });
     });

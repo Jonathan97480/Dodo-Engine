@@ -337,50 +337,49 @@ class SystemeController extends Controller
                 $id
             );
             if (!empty($result->error)) {
+                /* Return error */
                 foreach ($result->error as $key => $value) {
 
                     $this->Session->setFlash($value, 'bg-danger', $data);
                     return;
                 }
             } else {
+
                 $this->Session->setFlash('les infos de l\'utilisateur a été sauvegardé');
+
+                /* check if the modified user id matches the login user id */
+                if ($id == $this->Session->user('id')) {
+
+                    /* retrieval of user information from the database */
+                    $d['user'] = $this->User->loadInfoUser($id);
+
+                    /* Session update*/
+                    $this->Session->write('User', $d['user']);
+                }
+                /*redirection to the add user form by passing the id in the url*/
                 $this->redirect('admin/systeme/admin_add_user/id:' . $result->info->id);
             }
-        } else {
-            if (!empty($id)) {
-                $d['user'] = $this->User->loadInfoUser($id);
-
-                if (!empty($d['user'])) {
-
-                    if ($d['user']->id == $this->Session->user('id')) {
-                        $this->Session->write('User', $d['user']);
-                    }
-                } else {
-
-                    $this->Session->setFlash('cet utilisateur n\'existe pas', 'bg-danger');
-
-                    $this->redirect("admin/users/admin_users_list");
-                }
-            }
-            $this->set($d);
         }
+        $d['user'] = $this->User->loadInfoUser($id);
+        $this->set($d);
     }
 
-    function admin_deleteUser($id){
+    function admin_deleteUser($id)
+    {
 
         $this->loadModel('User');
 
-      $d=  $this->User->deleteUser($id);
+        $d =  $this->User->deleteUser($id);
 
-      if(isset($d->error)){
+        if (isset($d->error)) {
 
-        foreach ($d->error as $key => $value) {
-            $this->Session->setFlash($value, 'bg-danger');
+            foreach ($d->error as $key => $value) {
+                $this->Session->setFlash($value, 'bg-danger');
+            }
+
+            $this->redirect('systeme/admin_users_list');
         }
-
         $this->redirect('systeme/admin_users_list');
-      }
-      $this->redirect('systeme/admin_users_list');
     }
     #endregion
     #region Post
@@ -661,7 +660,6 @@ class SystemeController extends Controller
         $d = $this->Message->getNewMessages();
 
         retour_json('true', 'new message', $d);
-        
     }
 
 
