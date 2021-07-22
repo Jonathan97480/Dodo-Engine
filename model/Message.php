@@ -121,12 +121,19 @@ class Message extends Model
      *  return count message no read
      * @return void
      */
-    private function countMessages()
+    public function countMessages(bool $is_Read = false)
     {
 
-        $d = $this->findCount([
-            'is_read' => '0'
-        ]);
+        if (!$is_Read) {
+            $d = $this->findCount([
+                'is_read' => '0'
+            ]);
+        } else {
+            $d = $this->findCount([
+                'is_read' => '1'
+            ]);
+        }
+
 
         return $d;
     }

@@ -92,7 +92,7 @@ $user = $_SESSION['User'];
                 <a class="nav-link " href="<?= Router::url('systeme/admin_message') ?>" aria-expanded="true">
                     <i class="fas fa-envelope"></i>
 
-                    <span>Message<span class="badge badge-danger m-span notif-m">7</span></span>
+                    <span>Message<span class="badge badge-danger m-span notif-m"></span></span>
 
                 </a>
             </li>
@@ -199,7 +199,7 @@ $user = $_SESSION['User'];
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
                                 </a>
-                                <a class="dropdown-item" href="<?php echo Router::url('systeme/admin_add_user/settings') ?>">
+                                <a class="dropdown-item" href="">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Settings
                                 </a>

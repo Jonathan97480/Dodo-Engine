@@ -58,6 +58,19 @@ class SystemeController extends Controller
     /* CHART */
     function admin_index()
     {
+        $this->loadModel('Post');
+        $this->loadModel('Message');
+
+
+
+        $d['numberPost'] = $this->Post->GetNumberPost('post');
+        $d['numberProjet'] = $this->Post->GetNumberPost('projet');
+        $d['numberMessageNoRead'] = $this->Message->countMessages();
+        $d['numberMessageRead'] = $this->Message->countMessages(true);
+
+
+
+        $this->set($d);
     }
     #region Role
 
@@ -360,7 +373,10 @@ class SystemeController extends Controller
                 $this->redirect('admin/systeme/admin_add_user/id:' . $result->info->id);
             }
         }
-        $d['user'] = $this->User->loadInfoUser($id);
+
+        if (!empty($id)) {
+            $d['user'] = $this->User->loadInfoUser($id);
+        }
         $this->set($d);
     }
 

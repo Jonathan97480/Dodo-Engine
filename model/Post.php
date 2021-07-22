@@ -4,9 +4,6 @@ class Post extends Model
     public $table = 'post';
 
 
-
-
-
     /**
      * GetlisteArticle
      *  Return the first 10 articles per page 
@@ -463,7 +460,7 @@ class Post extends Model
             ], 't_cathegories_has_post');
         }
     }
-    
+
     /**
      * deletePost
      *  delete post by id
@@ -572,6 +569,12 @@ class Post extends Model
         return true;
     }
 
+    public function GetNumberPost(string $type)
+    {
 
+        $value = $this->findCount(['type' => $type]);
+
+        return $value;
+    }
     #endregion
 }
